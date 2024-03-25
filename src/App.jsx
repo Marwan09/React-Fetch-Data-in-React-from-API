@@ -4,14 +4,31 @@ import "./App.css";
 function App() {
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
-  useEffect(() => {
+  // async function fetchAPI() {
+  const fetchAPI = async () => {
     setLoading(true);
-    fetch("https://jsonplaceholder.typicode.com/todos")
-      .then((response) => response.json())
-      // .then((json) => console.log(json));
-      .then((data) => setRecords(data))
-      .catch((error) => console.error(error));
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/todos"
+      );
+      const data = await response.json();
+      if (data) {
+        setRecords(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
     setLoading(false);
+  };
+
+  useEffect(() => {
+    // setLoading(true);
+    // fetch('https://jsonplaceholder.typicode.com/todos')
+    //   .then(response => response.json())
+    //   .then(data => setRecords(data))
+    //   .catch(error => console.error(error));
+    // setLoading(false);
+    fetchAPI();
   }, []);
 
   return (
